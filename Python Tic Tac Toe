@@ -1,0 +1,193 @@
+play = 'True'
+turn = 1
+tiegame = 'False'
+def tictactoe(num):
+    global play
+    global tiegame
+    x1=['-','-','-']
+    x2=['-','-','-']
+    x3=['-','-','-']
+    while play == 'True':
+        global turn
+        if turn > 1:
+            if turn % 2 <> 0:
+                itm = 'X'
+            else:
+                itm = 'O'
+            print 'It is %s turn!' %(itm + 's')
+            num = input('Please enter a number: ')
+        if num == 1:
+            if x3[0] == '-':
+                if turn %2 <> 0:
+                    x3[0] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x3[0] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 2:
+            if x3[1] == '-':
+                if turn %2 <> 0:
+                    x3[1] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x3[1] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 3:
+            if x3[2] == '-':
+                if turn %2 <> 0:
+                    x3[2] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x3[2] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 4:
+            if x2[0] == '-':
+                if turn %2 <> 0:
+                    x2[0] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x2[0] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 5:
+            if x2[1] == '-':
+                if turn %2 <> 0:
+                    x2[1] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x2[1] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 6:
+            if x2[2] == '-':
+                if turn %2 <> 0:
+                    x2[2] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x2[2] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 7:
+            if x1[0] == '-':
+                if turn %2 <> 0:
+                    x1[0] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x1[0] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 8:
+            if x1[1] == '-':
+                if turn %2 <> 0:
+                    x1[1] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x1[1] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        elif num == 9:
+            if x1[2] == '-':
+                if turn %2 <> 0:
+                    x1[2] = 'X'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+                else:
+                    x1[2] = 'O'
+                    print_board(x1,x2,x3)
+                    game_status(turn,x1,x2,x3)
+                    turn += 1
+            else:
+                print 'Spot already taken.Please try again. '
+        else:
+            break
+    else:
+        if tiegame == 'False':
+            print 'Winner Winner Chicken Dinner!!!'
+        
+        
+def print_board(x1,x2,x3):
+    print ' ' + str(x1[0]) + ' ' + '|' + ' ' + str(x1[1]) + ' ' + '|' + ' ' + str(x1[2]) + ' '
+    print '---|---|---'
+    print ' ' + str(x2[0]) + ' ' + '|' + ' ' + str(x2[1]) + ' ' + '|' + ' ' + str(x2[2]) + ' '
+    print '---|---|---'
+    print ' ' + str(x3[0]) + ' ' + '|' + ' ' + str(x3[1]) + ' ' + '|' + ' ' + str(x3[2]) + ' '
+    
+def game_status(turn,x1,x2,x3):
+    global play
+    global tiegame
+    if turn %2 <> 0:
+        icon = 'X'
+    else:
+        icon = 'O'
+    '''
+    horizontal win/vertical win/diagonal win
+    '''
+    if x1[0] == icon and x2[0] == icon and x3[0] == icon:
+        play = 'False'
+    elif x1[1] == icon and x2[1] == icon and x3[1] == icon:
+        play = 'False'
+    elif x1[2] == icon and x2[2] == icon and x3[2] == icon:
+        play = 'False'
+    elif x1[0] == icon and x1[1] == icon and x1[2] == icon:
+        play = 'False'
+    elif x2[0] == icon and x2[1] == icon and x2[2] == icon:
+        play = 'False'
+    elif x3[0] == icon and x3[1] == icon and x3[2] == icon:
+        play = 'False'
+    elif x1[0] == icon and x2[1] == icon and x3[2] == icon:
+        play = 'False'
+    elif x1[2] == icon and x2[1] == icon and x3[0] == icon:
+        play = 'False'
+    else:
+        if '-' in x1 or '-' in x2 or '-' in x3:
+            play = "True"
+        else:
+            print 'Tie Game!!'
+            tiegame = 'True'
+            play = 'False'
+    
+tictactoe(input("Please enter a number"))
