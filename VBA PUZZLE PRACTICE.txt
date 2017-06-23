@@ -1,0 +1,128 @@
+Option Explicit
+Sub MovePuzzle()
+Dim ws As Worksheet
+Dim ws1 As Worksheet
+Dim CurCell As Range
+Dim CellLeft As Range
+Dim CellRight As Range
+Dim CellUp As Range
+Dim CellDown As Range
+
+Set ws = Sheets("PUZZLE")
+Set ws1 = Sheets("PICTURE")
+
+Set CurCell = ws.Range(Right(ws.Shapes(Application.Caller).Name, 2))
+
+Set CellLeft = CurCell.Offset(0, -1)
+Set CellRight = CurCell.Offset(0, 1)
+Set CellUp = CurCell.Offset(-1, 0)
+Set CellDown = CurCell.Offset(1, 0)
+
+If ws1.Range(CellLeft.Address) = "BLANK" Then
+    ws1.Range(CellLeft.Address).Value = ws1.Range(CurCell.Address).Value
+    ws1.Range(CurCell.Address).Value = "BLANK"
+ElseIf ws1.Range(CellRight.Address) = "BLANK" Then
+    ws1.Range(CellRight.Address).Value = ws1.Range(CurCell.Address).Value
+    ws1.Range(CurCell.Address).Value = "BLANK"
+ElseIf ws1.Range(CellUp.Address) = "BLANK" Then
+    ws1.Range(CellUp.Address).Value = ws1.Range(CurCell.Address).Value
+    ws1.Range(CurCell.Address).Value = "BLANK"
+ElseIf ws1.Range(CellDown.Address) = "BLANK" Then
+    ws1.Range(CellDown.Address).Value = ws1.Range(CurCell.Address).Value
+    ws1.Range(CurCell.Address).Value = "BLANK"
+End If
+
+End Sub
+
+Sub Reset()
+Dim ws As Worksheet
+Dim CR
+
+Set ws = Sheets("PICTURE")
+
+For Each CR In Array("B2", "B3", "B4", "B5", "B6", "C2", "C3", "C4", "C5", "C6", "D2", "D3", "D4", "D5", "D6", "E2", "E3", "E4", "E5", "E6", "F2", "F3", "F4", "F5", "F6")
+    ws.Range(CR).Value = "PIC" & CR
+Next CR
+
+ws.Range("F6").Value = "BLANK"
+
+End Sub
+Sub ArrayShuffle()
+    Dim index As Long
+    Dim newIndex As Long
+    Dim firstIndex As Long
+    Dim itemCount As Long
+    Dim tmpValue As Variant
+    Dim arr As Variant
+    
+arr = Array("a", "b", "c")
+    
+    firstIndex = LBound(arr)
+    itemCount = UBound(arr) - LBound(arr) + 1
+    
+    For index = UBound(arr) To LBound(arr) + 1 Step -1
+        ' evaluate a random index from LBound to INDEX
+        newIndex = firstIndex + Int(Rnd * itemCount)
+        ' swap the two items
+        tmpValue = arr(index)
+        arr(index) = arr(newIndex)
+        arr(newIndex) = tmpValue
+        ' prepare for next iteration
+        itemCount = itemCount - 1
+        Debug.Print tmpValue
+    Next
+
+End Sub
+
+Sub SCRAMBLE()
+Dim sn
+Dim sp
+Dim j
+Dim i
+Dim PIC As Variant
+Dim PICVALUE As New Collection
+Dim ws As Worksheet
+Dim Val1
+
+Set ws = Sheets("PICTURE")
+
+    Randomize
+    sn = Array(Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd, Rnd)
+    PIC = Array("PICB2", "PICC2", "PICD2", "PICE2", "PICF2", "PICB3", "PICC3", "PICD3", "PICE3", "PICF3", "PICB4", "PICC4", "PICD4", "PICE4", "PICF4", "PICB5", "PICC5", "PICD5", "PICE5", "PICF5", "PICB6", "PICC6", "PICD6", "PICE6", "BLANK")
+    sp = sn
+     
+    For j = 1 To 25
+        sp(j - 1) = Application.Match(Application.Large(sn, j), sn, 0)
+        PICVALUE.Add (sp(j - 1) - 1)
+    Next
+
+ws.Range("B2").Value = PIC(PICVALUE(1))
+ws.Range("C2").Value = PIC(PICVALUE(2))
+ws.Range("D2").Value = PIC(PICVALUE(3))
+ws.Range("E2").Value = PIC(PICVALUE(4))
+ws.Range("F2").Value = PIC(PICVALUE(5))
+ws.Range("B3").Value = PIC(PICVALUE(6))
+ws.Range("C3").Value = PIC(PICVALUE(7))
+ws.Range("D3").Value = PIC(PICVALUE(8))
+ws.Range("E3").Value = PIC(PICVALUE(9))
+ws.Range("F3").Value = PIC(PICVALUE(10))
+ws.Range("B4").Value = PIC(PICVALUE(11))
+ws.Range("C4").Value = PIC(PICVALUE(12))
+ws.Range("D4").Value = PIC(PICVALUE(13))
+ws.Range("E4").Value = PIC(PICVALUE(14))
+ws.Range("F4").Value = PIC(PICVALUE(15))
+ws.Range("B5").Value = PIC(PICVALUE(16))
+ws.Range("C5").Value = PIC(PICVALUE(17))
+ws.Range("D5").Value = PIC(PICVALUE(18))
+ws.Range("E5").Value = PIC(PICVALUE(19))
+ws.Range("F5").Value = PIC(PICVALUE(20))
+ws.Range("B6").Value = PIC(PICVALUE(21))
+ws.Range("C6").Value = PIC(PICVALUE(22))
+ws.Range("D6").Value = PIC(PICVALUE(23))
+ws.Range("E6").Value = PIC(PICVALUE(24))
+ws.Range("F6").Value = PIC(PICVALUE(25))
+    
+    
+End Sub
+
+

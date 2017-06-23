@@ -1,0 +1,106 @@
+Sub RECORDER()
+Dim ws As Worksheet
+
+Set ws = Sheets("REVIEW")
+
+DaysStockTarget = 75
+BOXQTY = 5
+
+ws.Range(ws.Cells(ws.Range("HEADERROW").Offset(1).Row, ws.Range("RECORDER30DAY").Column).Address, ws.Cells(ws.Range("LASTROW").Row, ws.Range("RECORDER30DAY").Column).Address).Cells.Clear
+ws.Range(ws.Cells(ws.Range("HEADERROW").Offset(1).Row, ws.Range("RECORDER60DAY").Column).Address, ws.Cells(ws.Range("LASTROW").Row, ws.Range("RECORDER60DAY").Column).Address).Cells.Clear
+Calculate
+
+Application.Calculation = xlCalculationManual
+Application.ScreenUpdating = False
+
+For lngRow = 5 To ws.UsedRange.Columns(2).Cells.Count
+    DAYSSTOCK30 = ws.Cells(lngRow, ws.Range("RECORDER30DAY").Column + 1)
+    RECORDER30 = ws.Range(ws.Cells(lngRow, ws.Range("RECORDER30DAY").Column).Address).Address
+    DSVUSED = ws.Cells(lngRow, ws.Range("DSVUSED").Column)
+    
+    If DAYSSTOCK30 < DaysStockTarget And DSVUSED <> 0 Then
+        REPLENISHTO30 = WorksheetFunction.Ceiling_Math((DaysStockTarget - DAYSSTOCK30) * DSVUSED, BOXQTY)
+        ws.Range(RECORDER30) = REPLENISHTO30
+    End If
+    
+Next lngRow
+
+Calculate
+
+For lngRow = 5 To ws.UsedRange.Columns(2).Cells.Count
+    DAYSSTOCK60 = ws.Cells(lngRow, ws.Range("RECORDER60DAY").Column + 1)
+    RECORDER60 = ws.Range(ws.Cells(lngRow, ws.Range("RECORDER60DAY").Column).Address).Address
+    DSVUSED = ws.Cells(lngRow, ws.Range("DSVUSED").Column)
+        
+    If DAYSSTOCK60 < DaysStockTarget And DSVUSED <> 0 Then
+        REPLENISHTO60 = WorksheetFunction.Ceiling_Math((DaysStockTarget - DAYSSTOCK60) * DSVUSED, BOXQTY)
+        ws.Range(RECORDER60) = REPLENISHTO60
+    End If
+    
+Next lngRow
+
+Application.Calculation = xlCalculationAutomatic
+Application.ScreenUpdating = True
+
+End Sub
+Sub RoundsOrder()
+Dim ws As Worksheet
+
+Call RhassRefreshDataConnection.RefreshDataConnection
+
+Set ws = Sheets("REVIEW")
+
+Application.EnableEvents = False
+Application.ScreenUpdating = False
+Application.Calculation = xlCalculationManual
+
+BOXQTY = 100
+
+MAXCONTAINERWGT = 41500
+ROUNDSORDER58WGT = WorksheetFunction.SumProduct(ws.Range("ROUNDSORDER5.8"), ws.Range("ROUNDSWGT5.8"))
+
+Do While ROUNDSORDER58WGT < (MAXCONTAINERWGT * 0.95)
+    If ROUNDSORDER58WGT + (ws.Cells(ws.Range(Application.Evaluate("=Cell(""address"",INDEX(RECORDER30DAY,MATCH(MIN(AN34:AN40),AN:AN,0)))")).Row, ws.Range("AVGWGT").Column).Value * BOXQTY) <= (MAXCONTAINERWGT * 0.95) Then
+        addr = Application.Evaluate("=Cell(""address"",INDEX(RECORDER30DAY,MATCH(MIN(AN34:AN40),AN:AN,0)))")
+        lngRow = ws.Range(addr).Row
+        AVGWGT = ws.Cells(lngRow, ws.Range("AVGWGT").Column).Value
+        NEWWGT = ROUNDSORDER58WGT + (AVGWGT * BOXQTY)
+        If NEWWGT < (MAXCONTAINERWGT * 0.95) Then
+            ws.Range(addr).Value = ws.Range(addr).Value + BOXQTY
+            ROUNDSORDER58WGT = NEWWGT
+        End If
+    Else
+        Exit Do
+    End If
+Calculate
+Loop
+
+ROUNDSORDER34WGT = WorksheetFunction.SumProduct(ws.Range("ROUNDSORDER3.4"), ws.Range("ROUNDSWGT3.4"))
+
+Do While ROUNDSORDER34WGT < (MAXCONTAINERWGT * 0.95)
+    If ROUNDSORDER34WGT + (ws.Cells(ws.Range(Application.Evaluate("=Cell(""address"",INDEX(RECORDER30DAY,MATCH(MIN(AN41:AN46),AN:AN,0)))")).Row, ws.Range("AVGWGT").Column).Value * BOXQTY) <= (MAXCONTAINERWGT * 0.95) Then
+        addr = Application.Evaluate("=Cell(""address"",INDEX(RECORDER30DAY,MATCH(MIN(AN41:AN46),AN:AN,0)))")
+        lngRow = ws.Range(addr).Row
+        AVGWGT = ws.Cells(lngRow, ws.Range("AVGWGT").Column).Value
+        NEWWGT = ROUNDSORDER34WGT + (AVGWGT * BOXQTY)
+        If NEWWGT < (MAXCONTAINERWGT * 0.95) Then
+            ws.Range(addr).Value = ws.Range(addr).Value + BOXQTY
+            ROUNDSORDER34WGT = NEWWGT
+        End If
+    Else
+        Exit Do
+    End If
+Calculate
+Loop
+
+
+Application.EnableEvents = True
+Application.ScreenUpdating = True
+Application.Calculation = xlCalculationAutomatic
+
+Call RhassExportOrder.ExportRoundsContainer58
+Call RhassExportOrder.ExportRoundsContainer34
+
+Sheets("ROUNDS CONTAINER .625").Activate
+
+End Sub
